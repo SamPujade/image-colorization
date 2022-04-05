@@ -1,0 +1,32 @@
+dataset:
+  train_root_dir: "datasets/kaggle-1/train_color/*.jpg"
+  test_root_dir: "datasets/kaggle-1/test_color/*.jpg"
+  #test_root_dir: "datasets/personal/test/*.jpg"
+  size: 256
+  n_train_images: 5000
+  n_test_images: 100
+
+train:
+  epochs: 100
+  batch_size: 8
+  d_learning_rate: 0.00005
+  g_learning_rate: 0.0001
+  beta1: 0.5
+  beta2: 0.999
+  use_pretrain: 1
+  pretrain_model: "models/res18-unet.pt"
+
+test:
+  show_index: 1
+  D: "models/discriminator_GPU_2204_100e"
+  G: "models/generator_GPU_2204_100e"
+
+restore:
+  flag: True
+#   D: "last.D.pth"
+#   G: "models/generator"
+
+save:
+  every: 1
+  D: 'models/discriminator_test'
+  G: 'models/generator_test'

@@ -1,0 +1,5 @@
+yaml
+pyyaml
+scikit-image
+attrdict
+fastai
