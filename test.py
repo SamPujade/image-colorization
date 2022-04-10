@@ -1,13 +1,11 @@
+import torch
+import torch.nn as nn
+import torch.utils.data as data_utils
 import yaml
-import argparse
 import numpy as np
 from attrdict import AttrDict
 import matplotlib.pyplot as plt
-
-import torch
-import torch.nn as nn
-from torch.autograd import Variable
-import torch.utils.data as data_utils
+from PIL import Image
 
 from dataset import ImageDataset
 from networks.generator import Generator
@@ -16,16 +14,27 @@ from utils.build_res_unet import build_res_unet
 
 
 def test(params):
+    # Initialize generator and loss criterion
     G = Generator()
     l_criterion = nn.L1Loss()
 
-    # if params.test.G:
-    #     G.load_state_dict(torch.load(params.restore.G))
-    # G = build_res_unet(n_input=1, n_output=2, size=256)
-    # G.load_state_dict(torch.load("models/res18-unet.pt"))
-    G = build_res_unet(n_input=1, n_output=2, size=256)
-    G.load_state_dict(torch.load(params.test.G, map_location='cpu'))
+    # We use GPU if available, otherwise CPU
+    if torch.cuda.is_available():
+        print("Using GPU with cuda")
+    else:
+        print("Using CPU")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+    # Load generator
+    if params.test.pretrained:
+        G = build_res_unet(n_input=1, n_output=2, size=256)
+    else:
+        G = Generator()
+    if "G" in params.test:
+        G.load_state_dict(torch.load(params.test.G, map_location=device))
+    G = G.to(device)
+
+    # Load dataset
     dataset = ImageDataset(params.dataset.test_root_dir, params.dataset.size, params.dataset.n_test_images)
     train_loader = data_utils.DataLoader(dataset, shuffle=True, num_workers=1)
 
@@ -33,15 +42,14 @@ def test(params):
     num_steps = 0
 
     for i, data in enumerate(train_loader):
+        # Split data into channels
         num_steps += 1
-        real_l_data = data[:, 0:1, :, :] / 50 - 1
-        real_ab_data = data[:, 1:, :, :] / 128
+        real_l_data = data[:, 0:1, :, :].to(device) / 50 - 1
+        real_ab_data = data[:, 1:, :, :].to(device) / 128
         fake_ab_data = G(real_l_data)
 
+        # Plot original image, grayscale image and generated image
         if i == int(params.test.show_index):
-
-            #np_fake_img = fake_data.data.numpy()#[0] / 2.0 + 0.5
-            #np_fake_img = np_fake_img.transpose((1, 2, 0))
             np_fake_img = lab_to_rgb(real_l_data, fake_ab_data)[0]
             np_real_img = lab_to_rgb(real_l_data, real_ab_data)[0]
             np_bw_img = lab_to_rgb(real_l_data, torch.zeros(1, 2, data.shape[2], data.shape[3]))[0]
@@ -60,6 +68,16 @@ def test(params):
             ax3.set_title('Generated Image')
 
             plt.show()
+
+        # Save original and generated images
+        if i < params.test.save_nb:
+            np_fake_img = lab_to_rgb(real_l_data, fake_ab_data)[0]
+            np_real_img = lab_to_rgb(real_l_data, real_ab_data)[0]
+
+            im = Image.fromarray((np_fake_img * 255).astype(np.uint8))
+            im = im.save(f"{params.test.save_path}/test_{i:04d}.png")
+            im2 = Image.fromarray((np_real_img * 255).astype(np.uint8))
+            im2 = im2.save(f"{params.test.save_path}/test_{i:04d}_real.png")
 
         # Calculate the image distance loss pixelwise between the images.
         loss = l_criterion(real_ab_data, fake_ab_data)

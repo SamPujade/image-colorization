@@ -1,32 +1,34 @@
 dataset:
-  train_root_dir: "datasets/kaggle-1/train_color/*.jpg"
-  test_root_dir: "datasets/kaggle-1/test_color/*.jpg"
-  #test_root_dir: "datasets/personal/test/*.jpg"
-  size: 256
-  n_train_images: 5000
-  n_test_images: 100
+  train_root_dir: "datasets/kaggle-1/train_color/*.jpg"   # path of the train folder
+  # test_root_dir: "datasets/kaggle-1/test_color/*.jpg"   # path of the test folder
+  test_root_dir: "results/5images/*"                      # path of the test folder
+  size: 256                                               # size of images
+  n_train_images: 5000                                    # number of training images
+  n_test_images: -1                                       # number of test images (-1 for all images)
 
 train:
-  epochs: 100
-  batch_size: 8
-  d_learning_rate: 0.00005
-  g_learning_rate: 0.0001
-  beta1: 0.5
-  beta2: 0.999
-  use_pretrain: 1
-  pretrain_model: "models/res18-unet.pt"
+  epochs: 100                                             # number of training epochs
+  batch_size: 8                                           # batch size
+  d_learning_rate: 0.00005                                # learning rate (discriminator)
+  g_learning_rate: 0.0001                                 # learning rate (generator)
+  beta1: 0.5                                              # optimizer parameter
+  beta2: 0.999                                            # optimizer parameter
+  use_pretrain: 1                                         # 1 if loading pretrained model, else 0
+  pretrain_model: "models/res18-unet.pt"                  # path of the pretrained model
 
 test:
-  show_index: 1
-  D: "models/discriminator_GPU_2204_100e"
-  G: "models/generator_GPU_2204_100e"
+  show_index: 1                                           # index of the image to plot
+  save_nb: 20                                             # number of images to save
+  pretrained: 1                                           # 1 if generator used pre-trained model, else 0
+  G: "models/generator_GPU_2204_100e"                     # path of the generator model
+  save_path: "results/5images"                            # path to save images
 
 restore:
-  flag: True
-#   D: "last.D.pth"
-#   G: "models/generator"
+  flag: True                                              
+#   D: "models/discriminator"                             # path to dicriminator model to restore
+#   G: "models/generator"                                 # path to generator model to restore
 
 save:
-  every: 1
-  D: 'models/discriminator_test'
-  G: 'models/generator_test'
+  every: 1                                                # number of epochs between each save of the models
+  D: 'models/discriminator_test'                          # path to save the discriminator model
+  G: 'models/generator_test'                              # path to save the generator model
