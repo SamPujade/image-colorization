@@ -1,6 +1,6 @@
 # image-colorization
 
-This project is inspired by the work of this article : https://arxiv.org/abs/1803.05400. 
+This project is inspired by the work of [this article](https://arxiv.org/abs/1803.05400).
 
 ## Requirements
 
@@ -13,6 +13,7 @@ Here are the datasets that have been used for this project :
 - https://www.kaggle.com/datasets/aayush9753/image-colorization-dataset/
 - https://www.kaggle.com/datasets/ashwingupta3012/human-faces
 - https://www.kaggle.com/datasets/arnaud58/landscape-pictures
+
 But any set of images can be used here.
 
 ## Update parameters
