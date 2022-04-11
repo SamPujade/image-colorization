@@ -57,4 +57,6 @@ test:
 
 ## Results
 
-<p align="center"> <img src="https://github.com//SamPujade/image-colorization/blob/main/im/faces_pretrain_10.png" width="700" alt="Training with faces"/>
+- Training with human faces dataset :
+
+<p align="center"> <img src="https://github.com/SamPujade/image-colorization/blob/main/im/faces_pretrain_10.png" =250x250 alt="Training with faces"/>
