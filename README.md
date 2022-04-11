@@ -57,6 +57,26 @@ test:
 
 ## Results
 
-- Training with human faces dataset :
+For all pictures :
+- top row = original images
+- middle row = grayscale images
+- bottom row = generated images
+
+
+
+Training with general images (5k images) :
+
+<p align="center"> <img src="https://github.com/SamPujade/image-colorization/blob/main/im/general_pretrain_10.png" =250x250 alt="Training with general images"/>
+
+Training with human faces dataset :
 
 <p align="center"> <img src="https://github.com/SamPujade/image-colorization/blob/main/im/faces_pretrain_10.png" =250x250 alt="Training with faces"/>
+
+Training with landscapes dataset :
+
+<p align="center"> <img src="https://github.com/SamPujade/image-colorization/blob/main/im/landscapes_pretrain_10.png" =250x250 alt="Training with landscapes"/>
+
+  
+Training with general images (10k images) :
+
+<p align="center"> <img src="https://github.com/SamPujade/image-colorization/blob/main/im/general_10k_pretrain_10.png" =250x250 alt="Training with faces"/>
