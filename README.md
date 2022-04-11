@@ -54,3 +54,7 @@ test:
   pretrained: {1 or 0}      # 1 if pretrained model has been used for the model
   G: 'models/{SAVED_GENERATOR}'
 ```
+
+## Results
+
+<p align="center"> <img src="https://github.com//SamPujade/image-colorization/blob/main/im/faces_pretrain_10.png" width="700" alt="Training with faces"/>
